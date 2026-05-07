@@ -1437,14 +1437,20 @@
 </div>
 <button class="back-to-top" aria-label="Back to top" onclick="goHome()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2C2620" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <script>
-  function goHome() {
+  function pauseSnap() {
     document.documentElement.style.scrollSnapType = 'none';
-    history.replaceState(null, '', window.location.pathname);
-    window.scrollTo(0, 0);
     setTimeout(function() {
       document.documentElement.style.scrollSnapType = 'y mandatory';
-    }, 100);
+    }, 1000);
   }
+  function goHome() {
+    pauseSnap();
+    history.replaceState(null, '', window.location.pathname);
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll('a.seat-tile').forEach(function(t) {
+    t.addEventListener('click', pauseSnap);
+  });
   const fadeObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
   }, { threshold: 0.1 });
